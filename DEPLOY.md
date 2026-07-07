@@ -13,7 +13,7 @@ The tool is **`collimer_scan`** (renamed from `beacon_free_scan` in v0.2.0; the 
 
 ## Channels & attribution (source tags)
 
-**Verified end-to-end 2026-07-07:** MCP + skill scans reach PostHog project **425827** (`scandcastle-marketing` — the product app shares it) as `scan_started` / `scan_completed`. The scan API **allowlists `source` to `{web, api, mcp, agent}` and silently rewrites anything else to `api`** (anti-spoof). So attribution is coarse:
+**Verified end-to-end 2026-07-07:** MCP + skill scans reach PostHog project **425827** (`sandcastle-marketing` — the product app shares it) as `scan_started` / `scan_completed`. The scan API **allowlists `source` to `{web, api, mcp, agent}` and silently rewrites anything else to `api`** (anti-spoof). So attribution is coarse:
 
 | Artifact | `source` recorded | Status |
 |---|---|---|
@@ -55,4 +55,4 @@ The tool is **`collimer_scan`** (renamed from `beacon_free_scan` in v0.2.0; the 
 
 ## Related tickets (sandcastlelabs/collimer)
 
-`#417` distribution/attribution · `#1459` how-did-you-hear · `#1460` funnel views (source taxonomy) · `#1472` remote server (Smithery/Claude/ChatGPT) · `#1473` Desktop Extension `.mcpb` · `#1475` skill rename + distribution + `/docs` controller fix.
+`#417` distribution/attribution · `#1459` how-did-you-hear · `#1460` funnel views (source taxonomy) · `#1472` remote server (Smithery/Claude/ChatGPT) · `#1473` Desktop Extension `.mcpb` · `#1475` skill rename + distribution · `#1480` per-channel `src` attribution.
