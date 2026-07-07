@@ -1,0 +1,16 @@
+# Smithery configuration — https://smithery.ai/docs
+# Sets a distinct source tag so Smithery-sourced scans are attributable in analytics.
+startCommand:
+  type: stdio
+  configSchema:
+    type: object
+    properties:
+      email:
+        type: string
+        description: "Optional — email to receive the full report."
+  commandFunction: |
+    (config) => ({
+      command: "npx",
+      args: ["-y", "collimer-mcp"],
+      env: { COLLIMER_SCAN_SOURCE: "mcp-smithery" }
+    })
