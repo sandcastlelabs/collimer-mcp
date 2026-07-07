@@ -1,0 +1,45 @@
+{
+  "name": "collimer-mcp",
+  "version": "0.2.0",
+  "description": "MCP server for Collimer — run a free AI-search visibility scan on any website and get the score, top gap, and a branded report.",
+  "license": "MIT",
+  "homepage": "https://collimer.com",
+  "repository": { "type": "git", "url": "git+https://github.com/sandcastlelabs/collimer-mcp.git" },
+  "bugs": { "url": "https://github.com/sandcastlelabs/collimer-mcp/issues" },
+  "author": "Sandcastle Labs (https://sandcastlelabs.ai)",
+  "type": "module",
+  "bin": {
+    "collimer-mcp": "dist/index.js"
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "build": "tsc",
+    "postbuild": "chmod +x dist/index.js",
+    "start": "node dist/index.js",
+    "smoke": "npm run build && node dist/smoke.js",
+    "test:protocol": "npm run build && node dist/protocol-test.js",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "mcp",
+    "modelcontextprotocol",
+    "collimer",
+    "ai-visibility",
+    "geo",
+    "ai-search"
+  ],
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.29.0",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "typescript": "^5.6.0"
+  }
+}
