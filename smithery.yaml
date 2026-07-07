@@ -1,5 +1,8 @@
 # Smithery configuration — https://smithery.ai/docs
-# Sets a distinct source tag so Smithery-sourced scans are attributable in analytics.
+# NOTE: the scan API allowlists `source` to {web,api,mcp,agent} and rewrites anything
+# else to `api`. So we do NOT set a custom COLLIMER_SCAN_SOURCE here (it would
+# misattribute Smithery scans to `api`); the default `mcp` is correct. Per-directory
+# attribution needs the product's free-form `src` field (collimer#417), not this enum.
 startCommand:
   type: stdio
   configSchema:
@@ -11,6 +14,5 @@ startCommand:
   commandFunction: |
     (config) => ({
       command: "npx",
-      args: ["-y", "collimer-mcp"],
-      env: { COLLIMER_SCAN_SOURCE: "mcp-smithery" }
+      args: ["-y", "collimer-mcp"]
     })

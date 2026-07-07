@@ -13,19 +13,18 @@ The tool is **`collimer_scan`** (renamed from `beacon_free_scan` in v0.2.0; the 
 
 ## Channels & attribution (source tags)
 
-Every scan carries a `source` so PostHog can show which channel drives usage (feeds Collimer **G6**: ≥25 agent scans/mo). Default source is set in code; per-listing configs can override via the `COLLIMER_SCAN_SOURCE` env.
+**Verified end-to-end 2026-07-07:** MCP + skill scans reach PostHog project **425827** (`scandcastle-marketing` — the product app shares it) as `scan_started` / `scan_completed`. The scan API **allowlists `source` to `{web, api, mcp, agent}` and silently rewrites anything else to `api`** (anti-spoof). So attribution is coarse:
 
-| Channel | source | Status |
+| Artifact | `source` recorded | Status |
 |---|---|---|
-| npx / README copy-paste | `mcp` | live |
-| Official MCP Registry | `mcp` (default) | live |
-| mcp.so · Glama | `mcp` (bare npx, no env) | in review |
-| Smithery | `mcp-smithery` (smithery.yaml) | needs remote (#1472) |
-| Remote server (Claude Connectors / ChatGPT Apps) | `mcp-remote` | not built (#1472) |
-| Desktop Extension `.mcpb` | `mcp-desktop` | backlog (#1473) |
-| Claude Code **skill** | `agent` (scripts/free_scan.sh) | live |
+| MCP server — *every* directory (npx, MCP Registry, mcp.so, Glama, Smithery, remote, desktop) | **`mcp`** | live |
+| Claude Code skill | **`agent`** | live |
+| Website scan form | `web` | — |
+| Anything else / invalid | `api` | — |
 
-Note: mcp.so/Glama deep-link a bare `npx`, so they can't carry a distinct env → they bucket as generic `mcp`. Only channels whose config supports env (Smithery, remote, desktop) can be split finer.
+**G6 metric = scans where `source IN ('mcp','agent')`** — measurable today.
+
+**Per-directory attribution (Smithery vs Glama vs mcp.so) does NOT work via `source`.** A custom `COLLIMER_SCAN_SOURCE` gets rewritten to `api` → *mis*attribution. **Do not set a custom `COLLIMER_SCAN_SOURCE` in any listing config.** Splitting channels finer needs the product's free-form `src`/`campaign` field (collimer#417) plumbed through the MCP/skill clients — see #1480.
 
 ## Release a new MCP version
 
