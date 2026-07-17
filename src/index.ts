@@ -2,7 +2,7 @@
 // Collimer MCP server — exposes `collimer_scan`, which runs a free AI-search
 // visibility scan via the public REST API and returns the depth-gated teaser.
 // Never returns the full report (gated behind a free account).
-// `beacon_free_scan` is kept as a deprecated hidden alias (removed in a future release).
+// (The deprecated `beacon_free_scan` alias was removed in 0.3.0 after its one-release window.)
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { z } from "zod";
@@ -11,7 +11,7 @@ import { runScan, formatTeaser, ScanError } from "./scan.js";
 
 const OVERALL_TIMEOUT_MS = 5 * 60 * 1000;
 
-const server = new McpServer({ name: "collimer", version: "0.2.1" });
+const server = new McpServer({ name: "collimer", version: "0.3.0" });
 
 const scanToolConfig = {
   title: "Collimer AI-visibility scan",
@@ -49,14 +49,7 @@ async function handleScan({ domain, email }: { domain: string; email?: string })
   }
 }
 
-// Primary tool.
 server.registerTool("collimer_scan", scanToolConfig, handleScan);
-// Deprecated alias — kept one release for clients pinned to the old name.
-server.registerTool(
-  "beacon_free_scan",
-  { ...scanToolConfig, description: `${scanToolConfig.description} (Deprecated alias for collimer_scan.)` },
-  handleScan,
-);
 
 async function main(): Promise<void> {
   const transport = new StdioServerTransport();
