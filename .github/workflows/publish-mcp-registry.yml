@@ -1,0 +1,35 @@
+# Publish server.json to the official MCP Registry via GitHub OIDC.
+#
+# Why OIDC: org-namespace publishing (io.github.sandcastlelabs/*) via personal
+# GitHub login proved unreliable (membership-visibility lookups 403'd even with
+# public membership + unrestricted OAuth policy, 2026-07-17). OIDC derives the
+# namespace from the repo itself — no user membership involved.
+#
+# Runs on every version tag (after the npm publish workflow) and on demand.
+name: Publish to MCP Registry
+
+on:
+  workflow_dispatch:
+  push:
+    tags: ["v*"]
+
+permissions:
+  id-token: write # required for OIDC login
+  contents: read
+
+jobs:
+  publish-registry:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install mcp-publisher
+        run: |
+          curl -fsSL "https://github.com/modelcontextprotocol/registry/releases/latest/download/mcp-publisher_linux_$(uname -m | sed 's/x86_64/amd64/;s/aarch64/arm64/').tar.gz" \
+            | tar xz mcp-publisher
+
+      - name: Login (GitHub OIDC)
+        run: ./mcp-publisher login github-oidc
+
+      - name: Publish server.json
+        run: ./mcp-publisher publish
