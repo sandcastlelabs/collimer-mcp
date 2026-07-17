@@ -2,16 +2,11 @@
   "name": "collimer-mcp",
   "version": "0.2.1",
   "mcpName": "io.github.sandcastlelabs/collimer-mcp",
-  "description": "MCP server for Collimer \u2014 run a free AI-search visibility scan on any website: score, top findings, and the upgrade path to a full ranked fix plan with verification.",
+  "description": "MCP server for Collimer — run a free AI-search visibility scan on any website: score, top findings, and the upgrade path to a full ranked fix plan with verification.",
   "license": "MIT",
   "homepage": "https://collimer.com",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/sandcastlelabs/collimer-mcp.git"
-  },
-  "bugs": {
-    "url": "https://github.com/sandcastlelabs/collimer-mcp/issues"
-  },
+  "repository": { "type": "git", "url": "git+https://github.com/sandcastlelabs/collimer-mcp.git" },
+  "bugs": { "url": "https://github.com/sandcastlelabs/collimer-mcp/issues" },
   "author": "Sandcastle Labs (https://sandcastlelabs.ai)",
   "type": "module",
   "bin": {
