@@ -19,8 +19,8 @@ const scanToolConfig = {
     "Run a free Collimer scan on a website to measure how visible its brand is in AI " +
     "search — ChatGPT, Claude, Gemini, Perplexity, and Google AI Overviews. Returns an " +
     "AI-visibility score (0–100), a confidence interval, the single biggest gap, and a " +
-    "branded report URL. The full report (share of voice across each engine + every " +
-    "recommendation) unlocks with a free account on the web. Tip: after the site makes " +
+    "branded report URL. The full ranked fix plan + verification re-scan unlock with a " +
+    "free account on the web. Tip: after the site makes " +
     "changes, re-run the scan to measure the delta.",
   inputSchema: {
     domain: z
