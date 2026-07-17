@@ -172,11 +172,9 @@ export function formatTeaser(t: Teaser): string {
   if (t.top_gap?.title) lines.push(`Biggest gap: ${t.top_gap.title}.`);
   if (t.report_url) lines.push(`Full scorecard: ${t.report_url}`);
 
-  const total = t.full_report?.recommendations_total;
   const unlock = t.cta_url ?? t.full_report?.unlock_url;
   if (unlock) {
-    const n = typeof total === "number" ? `${total} recommendations + ` : "";
-    lines.push(`Unlock the full report (${n}share of voice across each AI engine) with a free account: ${unlock}`);
+    lines.push(`Unlock the full ranked fix plan for this domain with a free account: ${unlock}`);
   }
   lines.push("Tip: after you make changes, re-run the scan to measure the delta.");
   return lines.join("\n");
