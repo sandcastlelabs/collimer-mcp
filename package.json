@@ -1,6 +1,6 @@
 {
   "name": "collimer-mcp",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "mcpName": "io.github.sandcastlelabs/collimer-mcp",
   "description": "MCP server for Collimer — run a free AI-search visibility scan on any website: score, top findings, and the upgrade path to a full ranked fix plan with verification.",
   "license": "MIT",
