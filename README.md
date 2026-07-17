@@ -6,7 +6,7 @@
 
 Trackers tell you you're invisible. Collimer tells you *why*, and what to fix.
 
-It exposes one tool, **`collimer_scan`**, which returns a depth-gated teaser: an AI-visibility score (0–100), a confidence interval, the single biggest gap, and a branded report URL. The full report — share of voice across every engine + every recommendation — unlocks with a free account at [collimer.com](https://collimer.com).
+It exposes one tool, **`collimer_scan`**, which returns a depth-gated teaser: an AI-visibility score (0–100), a confidence interval, the single biggest gap, and a branded report URL. The full ranked fix plan and verification re-scan unlock with a free account at [collimer.com](https://collimer.com).
 
 ## Install
 
@@ -44,7 +44,7 @@ Your assistant will call `collimer_scan` and return the teaser.
 | `domain` | required | The website to scan — `example.com` or `https://example.com`. |
 | `email` | optional | Emails the report and speeds claiming the account later. |
 
-Returns the teaser — score, confidence interval, top gap, report URL, and an unlock link. It **never** returns the full report; that's gated behind a free account.
+Returns the teaser — score, confidence interval, top gap, report URL, and an unlock link. The full ranked fix plan and verification re-scan are **never** returned; they unlock with a free account.
 
 ## Configuration (env)
 
@@ -58,7 +58,7 @@ Returns the teaser — score, confidence interval, top gap, report URL, and an u
 
 ## What is Collimer?
 
-[Collimer](https://collimer.com) measures and improves how often AI answer engines cite your brand — generative engine optimization (GEO), the AI-search successor to SEO. This MCP server is the free front door: scan any site from inside your assistant, see the score and the biggest gap, then open the full report and start tracking at [collimer.com](https://collimer.com). API docs: [app.collimer.com/docs](https://app.collimer.com/docs).
+[Collimer](https://collimer.com) measures and improves how often AI answer engines cite your brand — generative engine optimization (GEO), the AI-search successor to SEO. This MCP server is the free front door: scan any site from inside your assistant, see the score and the biggest gap, then open the full report and get your ranked fix plan at [collimer.com](https://collimer.com). API docs: [app.collimer.com/docs](https://app.collimer.com/docs).
 
 ## Privacy
 
