@@ -1,9 +1,15 @@
 // Core scan logic — wraps the Collimer public free-scan REST API.
 // Kept separate from the MCP wiring so it can be unit/smoke-tested directly.
+//
+// The 401 branch below carries its own guidance text on purpose. When the anonymous
+// scan endpoint starts requiring an account, every existing install gets a 401 — and
+// `src/index.ts` renders only `err.message`, discarding the response body, so nothing
+// the server says there ever reaches the user. Putting the guidance in the message is
+// what makes it visible without changing the MCP wiring.
 
 export const API_BASE = process.env.COLLIMER_API_BASE ?? "https://app.collimer.com";
 export const SOURCE = process.env.COLLIMER_SCAN_SOURCE ?? "mcp";
-export const USER_AGENT = "collimer-mcp/0.3.0";
+export const USER_AGENT = "collimer-mcp/0.3.1";
 
 /** Parse a positive-number env override, falling back when missing/invalid (#7). */
 function num(value: string | undefined, fallback: number): number {
@@ -88,6 +94,20 @@ async function safeJson(res: Response): Promise<unknown> {
   }
 }
 
+/** Best-effort human-readable message out of an error response body, capped so a huge/odd body can't flood the tool result. */
+function extractDetailMessage(detail: unknown): string | undefined {
+  if (!detail || typeof detail !== "object") return undefined;
+  const d = detail as Record<string, unknown>;
+  const candidate = d.message ?? d.error ?? d.detail;
+  const text = typeof candidate === "string" ? candidate : undefined;
+  return text ? text.slice(0, 300) : undefined;
+}
+
+const UNAUTHENTICATED_MESSAGE =
+  "This scan now requires a Collimer account — the anonymous scan API has been retired. " +
+  "Add Collimer as a remote MCP server at https://app.collimer.com/mcp and your client " +
+  "will prompt you to sign in, or run a free scan at https://app.collimer.com.";
+
 /** Retry-After (seconds) → bounded ms; falls back to the poll interval (#3). */
 function retryAfterMs(res: Response): number {
   const header = res.headers.get("retry-after");
@@ -125,7 +145,13 @@ export async function runScan(
       continue;
     }
     if (res.status !== 201 && res.status !== 200) {
-      throw new ScanError(`Scan could not be started (HTTP ${res.status}).`, await safeJson(res));
+      const detail = await safeJson(res);
+      if (res.status === 401) throw new ScanError(UNAUTHENTICATED_MESSAGE, detail);
+      const extra = extractDetailMessage(detail);
+      throw new ScanError(
+        `Scan could not be started (HTTP ${res.status}).${extra ? ` ${extra}` : ""}`,
+        detail,
+      );
     }
     const created = (await safeJson(res)) as { scan_token?: string } | undefined;
     token = created?.scan_token;
@@ -155,7 +181,10 @@ export async function runScan(
       continue;
     }
     if (res.status !== 202) {
-      throw new ScanError(`Polling failed (HTTP ${res.status}).`, await safeJson(res));
+      const detail = await safeJson(res);
+      if (res.status === 401) throw new ScanError(UNAUTHENTICATED_MESSAGE, detail);
+      const extra = extractDetailMessage(detail);
+      throw new ScanError(`Polling failed (HTTP ${res.status}).${extra ? ` ${extra}` : ""}`, detail);
     }
     await sleep(POLL_INTERVAL_MS);
   }
@@ -169,7 +198,10 @@ export function formatTeaser(t: Teaser): string {
   const brand = t.brand ?? t.url ?? "the site";
   const lines = [`AI-search visibility for ${brand}: ${score}${ci}.`];
 
-  if (t.top_gap?.title) lines.push(`Biggest gap: ${t.top_gap.title}.`);
+  // No trailing period: top_gap.title can end in a URL (e.g. a sunset-notice CTA),
+  // and unlike this line, none of the other lines below force a "." after
+  // server-supplied text that might end in one.
+  if (t.top_gap?.title) lines.push(`Biggest gap: ${t.top_gap.title}`);
   if (t.report_url) lines.push(`Full scorecard: ${t.report_url}`);
 
   const unlock = t.cta_url ?? t.full_report?.unlock_url;
