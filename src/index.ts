@@ -11,7 +11,7 @@ import { runScan, formatTeaser, ScanError } from "./scan.js";
 
 const OVERALL_TIMEOUT_MS = 5 * 60 * 1000;
 
-const server = new McpServer({ name: "collimer", version: "0.3.0" });
+const server = new McpServer({ name: "collimer", version: "0.3.2" });
 
 const scanToolConfig = {
   title: "Collimer AI-visibility scan",

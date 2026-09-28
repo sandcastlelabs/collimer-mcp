@@ -1,19 +1,19 @@
 {
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-07-09/server.schema.json",
   "name": "io.github.sandcastlelabs/collimer-mcp",
-  "description": "Free AI-search visibility scan for any website — score, top findings, ranked-fix-plan upgrade.",
-  "status": "active",
+  "description": "Retired. Use Collimer's remote MCP server at https://app.collimer.com/mcp instead.",
+  "status": "deprecated",
   "repository": {
     "url": "https://github.com/sandcastlelabs/collimer-mcp",
     "source": "github"
   },
-  "version": "0.3.1",
+  "version": "0.3.2",
   "packages": [
     {
       "registryType": "npm",
       "registryBaseUrl": "https://registry.npmjs.org",
       "identifier": "collimer-mcp",
-      "version": "0.3.1",
+      "version": "0.3.2",
       "transport": { "type": "stdio" }
     }
   ],
