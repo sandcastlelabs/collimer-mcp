@@ -1,0 +1,53 @@
+# One-shot: mark every published version of this server deprecated in the
+# official MCP Registry.
+#
+# Why this is a separate operation: `status` in server.json is NOT how the
+# official registry records lifecycle state. It keeps its own status in
+# `_meta["io.modelcontextprotocol.registry/official"].status`, and ignores the
+# server-level field on publish — v0.3.2 shipped with `"status": "deprecated"`
+# and the registry still read back `"status": "active"`. `mcp-publisher status`
+# is the mechanism.
+#
+# Why OIDC rather than a local run: same reason as publish-mcp-registry.yml —
+# org-namespace auth (io.github.sandcastlelabs/*) via personal GitHub login
+# 403s on membership-visibility lookups. OIDC derives the namespace from the
+# repo.
+#
+# `deprecated` rather than `deleted` on purpose: deleted hides the entry from
+# default listings, which throws away the signpost. Deprecated keeps it
+# discoverable with the warning attached, so someone who searches for it still
+# finds the pointer to the remote server.
+#
+# Run once, then this file and the two publish workflows can go before the repo
+# is archived.
+name: Deprecate MCP Registry entry
+
+on:
+  workflow_dispatch:
+
+permissions:
+  id-token: write # required for OIDC login
+  contents: read
+
+jobs:
+  deprecate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install mcp-publisher
+        run: |
+          curl -fsSL "https://github.com/modelcontextprotocol/registry/releases/latest/download/mcp-publisher_linux_$(uname -m | sed 's/x86_64/amd64/;s/aarch64/arm64/').tar.gz" \
+            | tar xz mcp-publisher
+
+      - name: Login (GitHub OIDC)
+        run: ./mcp-publisher login github-oidc
+
+      - name: Deprecate every published version
+        run: |
+          ./mcp-publisher status \
+            --status deprecated \
+            --all-versions \
+            --yes \
+            --message "Retired. Connect to Collimer's remote MCP server at https://app.collimer.com/mcp instead." \
+            io.github.sandcastlelabs/collimer-mcp
