@@ -9,7 +9,7 @@
 
 export const API_BASE = process.env.COLLIMER_API_BASE ?? "https://app.collimer.com";
 export const SOURCE = process.env.COLLIMER_SCAN_SOURCE ?? "mcp";
-export const USER_AGENT = "collimer-mcp/0.3.1";
+export const USER_AGENT = "collimer-mcp/0.3.2";
 
 /** Parse a positive-number env override, falling back when missing/invalid (#7). */
 function num(value: string | undefined, fallback: number): number {

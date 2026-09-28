@@ -1,8 +1,8 @@
 {
   "name": "collimer-mcp",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "mcpName": "io.github.sandcastlelabs/collimer-mcp",
-  "description": "MCP server for Collimer — run a free AI-search visibility scan on any website: score, top findings, and the upgrade path to a full ranked fix plan with verification.",
+  "description": "Retired — connect to Collimer's remote MCP server at https://app.collimer.com/mcp instead. This package ran anonymous scans, which no longer exist.",
   "license": "MIT",
   "homepage": "https://collimer.com",
   "repository": { "type": "git", "url": "git+https://github.com/sandcastlelabs/collimer-mcp.git" },
